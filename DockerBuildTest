@@ -13,7 +13,7 @@ pipeline {
          sh 'export PATH=$PATH:/path/to/ansible'
 
          // Run the playbook
-         sh 'ansible-playbook docker.yaml'
+         sh 'ansible-playbook NewDocker.yml'
       }
     }
 
