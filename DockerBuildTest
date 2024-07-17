@@ -1,0 +1,30 @@
+pipeline {
+  agent any
+  stages {
+    stage('Code Checkout') {
+      steps{
+         git url: 'https://github.com/pablobarua1/IGP_Project.git'
+      }
+    }
+    stage('install docker using ansible') {
+      steps {
+         sh 'ansible-playbook docker.yaml'
+      }
+    }
+
+    stage('Build Docker Image') {
+      steps {
+         sh 'cp /var/snap/jenkins/4688/workspace/IGP_Pipeline_As_Code/target/ABCtechnologies-1.0.war /var/lib/jenkins/workspace/$JOB_NAME/abc.war'
+         sh 'docker build -t abc_tech:$BUILD_NUMBER .'
+         sh 'docker tag abc_tech:$BUILD_NUMBER jsachdev07/abc_tech:$BUILD_NUMBER'
+      }
+    }
+/** stage('Push Docker Image') {
+      steps {  
+         withDockerRegistry([ credentialsId: "dockerhub", url: "" ]) {
+            sh 'docker push jsachdev07/abc_tech:$BUILD_NUMBER'
+         }
+      }
+    } **/
+  }
+}
