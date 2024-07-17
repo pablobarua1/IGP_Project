@@ -8,23 +8,37 @@ pipeline {
     } **/
     stage('install docker using ansible') {
       steps {
+
+         // Ensure Ansible is in the PATH
+         sh 'export PATH=$PATH:/path/to/ansible'
+
+         // Run the playbook
          sh 'ansible-playbook docker.yaml'
       }
     }
 
-    stage('Build Docker Image') {
+
+    /** stage('Build Docker Image') {
       steps {
          sh 'cp /var/snap/jenkins/4688/workspace/IGP_Pipeline_As_Code/target/ABCtechnologies-1.0.war /var/lib/jenkins/workspace/$JOB_NAME/abc.war'
          sh 'docker build -t abc_tech:$BUILD_NUMBER .'
          sh 'docker tag abc_tech:$BUILD_NUMBER jsachdev07/abc_tech:$BUILD_NUMBER'
       }
     }
-/** stage('Push Docker Image') {
+   stage('Push Docker Image') {
       steps {  
          withDockerRegistry([ credentialsId: "dockerhub", url: "" ]) {
             sh 'docker push jsachdev07/abc_tech:$BUILD_NUMBER'
          }
       }
     } **/
+  }
+  post {
+        success {
+            echo 'Playbook executed successfully!'
+        }
+        failure {
+            echo 'Playbook execution failed!'
+        }
   }
 }
