@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     // Run ansible-playbook command
-                    sh "ansible-playbook -i inventory.ini your-playbook.yml"
+                    sh "ansible-playbook -i /home/igp/playbook/inventory.ini test.yml"
                 }
             }
         }
