@@ -13,7 +13,7 @@ pipeline {
          sh 'export PATH=$PATH:/path/to/ansible'
 
          // Run the playbook
-         sh 'ansible-playbook test.yml'
+         sh 'ansible-playbook -i /home/igp/playbook/inventory.ini test.yml'
       }
     }
 
