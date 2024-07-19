@@ -20,7 +20,7 @@ pipeline {
                     // Set up SSH key
                     sshagent(credentials: ['816a60d3-9aa0-40b7-a0d1-ee0c9a6499b7']) {
                         // Run ansible-playbook command
-                        sh "ansible-playbook -i /home/igp/playbook/inventory.ini -u ${SSH_USER} --private-key=${SSH_KEY} install_docker_s.yml"
+                        sh "ansible-playbook -i /home/igp/playbook/inventory.ini -u ${SSH_USER} --private-key=${SSH_KEY} install_docker.yml"
                     }
                 }
             }
