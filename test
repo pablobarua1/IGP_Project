@@ -1,0 +1,65 @@
+---
+- name: Install Docker and Python on target host
+  hosts: 192.0.0.5
+  become: true
+
+  tasks:
+    - name: Update the package index
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Install packages to allow apt to use a repository over HTTPS
+      ansible.builtin.apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+        state: present
+
+    - name: Add Docker’s official GPG key
+      ansible.builtin.command:
+        cmd: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+        creates: /usr/share/keyrings/docker-archive-keyring.gpg
+
+    - name: Set up the stable repository
+      ansible.builtin.copy:
+        dest: /etc/apt/sources.list.d/docker.list
+        content: |
+          deb [arch={{ ansible_architecture }} signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable
+
+    - name: Update the package index again
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Install Docker Engine, CLI, and Containerd
+      ansible.builtin.apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        state: present
+
+    - name: Install Python
+      ansible.builtin.apt:
+        name: python3
+        state: present
+
+    - name: Start and enable Docker service
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Add the current user to the Docker group
+      ansible.builtin.user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
+
+  handlers:
+    - name: Restart Docker
+      ansible.builtin.service:
+        name: docker
+        state: restarted
