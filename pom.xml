@@ -5,7 +5,7 @@
 	<groupId>com.abc</groupId>
 	<artifactId>ABCtechnologies</artifactId>
 	<packaging>war</packaging>
-	<version></version>
+	<version>2</version>
 	<name>RetailModule</name>
 	<url>http://www.example.com</url>
 	<properties>
