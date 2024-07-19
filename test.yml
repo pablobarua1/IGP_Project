@@ -1,5 +1,5 @@
 - name: Install Docker and Python on target host
-  # hosts: 192.0.0.5
+  hosts: 192.100.0.5
   become: true
 
   tasks:
