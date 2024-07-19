@@ -1,3 +1,4 @@
+---
 - name: Install Docker
   hosts: 192.100.0.5
   become: true
