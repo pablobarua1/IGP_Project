@@ -11,8 +11,8 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout the source code from your version control system
-                // git url: 'https://github.com/pablobarua1/IGP_Project', branch: 'master'
-                checkout scm
+                git url: 'https://github.com/pablobarua1/IGP_Project', branch: 'master'
+                // checkout scm
             }
         }
 
