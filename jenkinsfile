@@ -1,14 +1,18 @@
 pipeline {
     agent any
+
     environment {
         DOCKER_HUB_REPO = 'pablo.barua@gmail.com/igp_project'
         DOCKER_CREDENTIALS_ID = 'DockerHubLogin' 
+        GIT_REPO = 'https://github.com/pablobarua1/IGP_Project' 
+        BRANCH_NAME = 'master' 
+
     }
 
     stages {
         stage('Checkout') {
             steps {
-                 checkout scm
+                 git branch: "${BRANCH_NAME}", url: "${GIT_REPO}"
             }
         }
    
