@@ -1,8 +1,6 @@
 pipeline {
     agent any
-
     environment {
-        // Replace with your Docker Hub username and repository name
         DOCKER_HUB_REPO = 'pablo.barua@gmail.com/igp_project'
         DOCKER_CREDENTIALS_ID = 'DockerHubLogin' 
     }
@@ -10,31 +8,29 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the source code from your version control system
-                git url: 'https://github.com/pablobarua1/IGP_Project', branch: 'master'
-                // checkout scm
+                 checkout scm
             }
         }
+   
+        stage('Build') {
+            steps {
+                script {
+                    // Compile, test, and package the application
+                    sh './mvnw clean package'
+                }
+            }
+        }
+   
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    try {
-                        echo "Building Docker image: ${DOCKER_HUB_REPO}:${env.BUILD_ID}"
-                        def dockerImage = docker.build("${DOCKER_HUB_REPO}:${env.BUILD_ID}")
-                        dockerImage.inside {
-                            // Perform any additional steps inside the Docker container if needed
-                            sh 'echo "Running inside Docker container"'
-                        }
-                    } catch (Exception e) {
-                        echo "Error occurred: ${e.message}"
-                        throw e
-                    }
+                    // Build the Docker image
+                    docker.build("${DOCKER_HUB_REPO}:${env.BUILD_ID}")
                 }
             }
         }
-
-       
+        
         stage('Push Docker Image') {
             steps {
                 script {
@@ -46,7 +42,18 @@ pipeline {
                 }
             }
         }
-        
+
+        stage('Deploy Container') {
+            steps {
+                script {
+                    // Run the Docker container
+                    sh """
+                    docker run -d -p 8080:8080 --name ABCtechnologies-3 ${DOCKER_HUB_REPO}:${env.BUILD_ID}
+                    """
+                }
+            }
+        }
+
         stage('Clean Up') {
             steps {
                 script {
