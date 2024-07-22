@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_REPO = 'pablo.barua@gmail.com/igp_project'
+        DOCKER_HUB_REPO = 'darkknight7/igp_project'
         DOCKER_CREDENTIALS_ID = 'DockerHubLogin' 
         GIT_REPO = 'https://github.com/pablobarua1/IGP_Project' 
         BRANCH_NAME = 'master' 
