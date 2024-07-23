@@ -70,7 +70,7 @@ pipeline {
                 script {
                     // Run the Docker container
                     sh """
-                    docker run -d -p 9090:8090 --name ABCtechnologies-5 ${DOCKER_HUB_REPO}:${env.BUILD_ID}
+                    docker run -d -p 9090:8090 --name ABCtechnologies-6 ${DOCKER_HUB_REPO}:${env.BUILD_ID}
                     """
                 }
             }
@@ -78,10 +78,10 @@ pipeline {
 
         stage('Clean Up') {
             steps {
-                script {
                     // Clean up local Docker images
-                    docker.image("${DOCKER_HUB_REPO}:${env.BUILD_ID}").remove()
-                }
+                    sh """
+                    docker rmi ${DOCKER_HUB_REPO}:${env.BUILD_ID}
+                    """
             }
         } 
     }
