@@ -5,7 +5,7 @@ FROM tomcat:10.1-jdk17-openjdk
 LABEL maintainer="pablo.barua@gmail.com"
 
 # Add the WAR file to the Tomcat webapps directory
-COPY target/ABCtechnologies-4.war  /opt/tomcat/apache-tomcat-9.0.91/webapps
+COPY target/ABCtechnologies-5.war  /opt/tomcat/apache-tomcat-9.0.91/webapps
 
 # Expose the default Tomcat port
 EXPOSE 8090
