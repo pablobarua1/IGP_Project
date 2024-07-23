@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# URL of the application
+URL="http://localhost:8090"
+
+# Perform a simple health check
+response=$(curl --write-out '%{http_code}' --silent --output /dev/null $URL)
+
+# Check if the response code is 200
+if [ "$response" -eq 200 ]; then
+  echo "Application is up and running!"
+else
+  echo "Application is not responding. HTTP Status: $response"
+  exit 1
+fi
