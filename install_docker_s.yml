@@ -1,9 +1,0 @@
----
-- hosts: all  # Replace with your target hosts or group from inventory
-  become: yes  # Run tasks with sudo (root) privileges
-
-  tasks:
-    - name: Install packages to allow apt to use a repository over HTTPS
-      apt:
-        name: 
-          - apt-transport-
