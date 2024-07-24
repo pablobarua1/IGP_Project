@@ -2,8 +2,6 @@
 - name: Deploy to Kubernetes
   hosts: localhost
   tasks:
-
-    tasks:
     - name: Clone the Git repository
       git:
         repo: 'https://github.com/pablobarua1/IGP_Project.git'
@@ -25,8 +23,3 @@
         state: present
         deployment_definition: "{{ lookup('file', '/tmp/IGP-project/deployment.yml') }}"
 
-    - name: Display pod definition
-      debug:
-        msg: "{{ pod_definition }}"
-        msg: "{{ service_definition }}"
-        msg: "{{ deployment_definition }}"
