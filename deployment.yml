@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:IGP-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: IGPapp
+  template:
+    metadata:
+      labels:
+        app: IGPapp
+    spec:
+      containers:
+      - name: IGP-container
+        image: darkknight7/igp_project:latest
+        ports:
+        - containerPort: 9090
