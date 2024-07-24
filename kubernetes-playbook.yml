@@ -1,0 +1,32 @@
+---
+- name: Deploy to Kubernetes
+  hosts: localhost
+  tasks:
+
+    tasks:
+    - name: Clone the Git repository
+      git:
+        repo: 'https://github.com/pablobarua1/IGP_Project'
+        dest: '/tmp/IGP-project'
+        version: 'master' 
+      
+    - name: Create Kubernetes Pod
+      kubernetes.core.k8s:
+        state: present
+        pod_definition: "{{ lookup('file', '/tmp/IGP-project/pod.yml') }}"
+
+    - name: Create Kubernetes Service
+      kubernetes.core.k8s:
+        state: present
+        service_definition: "{{ lookup('file', ''/tmp/IGP-project/service.yml') }}"
+
+    - name: Create Kubernetes Deployment
+      kubernetes.core.k8s:
+        state: present
+        deployment_definition: "{{ lookup('file', ''/tmp/IGP-project/deployment.yml') }}"
+
+    - name: Display pod definition
+      debug:
+        msg: "{{ pod_definition }}"
+        msg: "{{ service_definition }}"
+        msg: "{{ deployment_definition }}"
