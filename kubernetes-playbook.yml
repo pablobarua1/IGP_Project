@@ -11,15 +11,15 @@
     - name: Create Kubernetes Pod
       kubernetes.core.k8s:
         state: present
-        pod_definition: "{{ lookup('file', '/tmp/IGP-project/pod.yml') }}"
+        definition: "{{ lookup('file', '/tmp/IGP-project/pod.yml') }}"
 
     - name: Create Kubernetes Service
       kubernetes.core.k8s:
         state: present
-        service_definition: "{{ lookup('file', '/tmp/IGP-project/service.yml') }}"
+        definition: "{{ lookup('file', '/tmp/IGP-project/service.yml') }}"
 
     - name: Create Kubernetes Deployment
       kubernetes.core.k8s:
         state: present
-        deployment_definition: "{{ lookup('file', '/tmp/IGP-project/deployment.yml') }}"
+        definition: "{{ lookup('file', '/tmp/IGP-project/deployment.yml') }}"
 
