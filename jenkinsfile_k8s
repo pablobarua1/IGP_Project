@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    environment {
+        ANSIBLE_HOST_KEY_CHECKING = 'False'
+        DOCKER_IMAGE = 'darkknight7/igp_project:22'
+        DOCKER_CREDENTIALS_ID = 'DockerHubLogin' 
+        GIT_REPO = 'https://github.com/pablobarua1/IGP_Project' 
+        REPO_DEST = '/tmp/IGP-project'
+        REPO_BRANCH = 'master' 
+
+    }
+
+    stages {
+        stage('Clone Git Repository') { 
+             steps { 
+                 // Clone the Git repository 
+                 git branch: "${REPO_BRANCH}", url: "${GIT_REPO}", changelog: false, poll: false 
+             }
+        }
+
+
+        stage('Pull Docker Image') {
+            steps {
+                script {
+                    echo "Pulling Docker image ${DOCKER_IMAGE} from Docker Hub"
+                    sh "docker pull ${DOCKER_IMAGE}"
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes using Ansible') {
+            steps {
+                ansiblePlaybook(
+                    playbook: '${REPO_DEST}/kubernetes-playbook.yml',
+                    credentialsId: 'kubeconfig-credentials-id'
+                )
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment to Kubernetes succeeded!'
+        }
+        failure {
+            echo 'Deployment to Kubernetes failed!'
+        }
+    }
+}
